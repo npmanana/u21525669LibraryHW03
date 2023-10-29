@@ -1,0 +1,257 @@
+﻿@model LibraryHW03.Models.CombinedViewModel
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<div class="row">
+    <div class="col-12">
+        <h2>Authors</h2>
+    </div>
+</div>
+
+<p>
+    <a href="#" class="btn create-link" data-url="@Url.Action("Create", "authors")">New Author</a>
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Authors.First().name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Authors.First().surname)
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var author in Model.Authors)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => author.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => author.surname)
+                    </td>
+                    <td class="text-end">
+                        <!-- Add text-end class here -->
+                        <a href="#" class="btn btn-secondary edit-link" data-url="@Url.Action("Edit", "authors", new { id = author.authorId})">Edit</a>
+                        <a href="#" class="btn btn-primary details-link" data-url="@Url.Action("Details", "authors", new { id = author.authorId})">Details</a>
+                        <a href="#" class="btn btn-danger delete-link" data-url="@Url.Action("Delete", "authors", new { id = author.authorId})">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { authorPage = 1 })">1</a>
+                </li>
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+                @for (int i = Math.Max(2, Model.AuthorCurrentPage - 3); i <= Math.Min(Model.AuthorTotalPages - 1, Model.AuthorCurrentPage + 3); i++)
+                {
+                    <li class="page-item @(i == Model.AuthorCurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { authorPage = i })">@i</a>
+                    </li>
+                }
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { authorPage = Model.AuthorTotalPages })">@Model.AuthorTotalPages</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Types</h2>
+        <p>
+            <a href="#" class="btn create-link" data-url="@Url.Action("Create", "types")">New Type</a>
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Types.First().name)
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var type in Model.Types)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => type.name)
+                    </td>
+                    <td class="text-end">
+                        <!-- Add text-end class here -->
+                        <a href="#" class="btn btn-secondary edit-link" data-url="@Url.Action("Edit", "types", new { id = type.typeId})">Edit</a>
+                        <a href="#" class="btn btn-primary details-link" data-url="@Url.Action("Details", "types", new { id = type.typeId})">Details</a>
+                        <a href="#" class="btn btn-danger delete-link" data-url="@Url.Action("Delete", "types", new { id = type.typeId})">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { typePage = 1 })">1</a>
+                </li>
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+                @for (int i = Math.Max(2, Model.TypeCurrentPage - 3); i <= Math.Min(Model.TypeTotalPages - 1, Model.TypeCurrentPage + 3); i++)
+                {
+                    <li class="page-item @(i == Model.TypeCurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { typePage = i })">@i</a>
+                    </li>
+                }
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { typePage = Model.TypeTotalPages })">@Model.TypeTotalPages</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<h2>Borrows</h2>
+
+<p>
+    <a href="#" class="btn create-link" data-url="@Url.Action("Create", "borrows")">Borrow a book</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Borrows.First().takenDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Borrows.First().broughtDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Borrows.First().books.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Borrows.First().students.name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var borrow in Model.Borrows)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => borrow.takenDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => borrow.broughtDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => borrow.books.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => borrow.students.name)
+            </td>
+            <td class="text-end">
+                <!-- Add text-end class here -->
+                <a href="#" class="btn btn-secondary edit-link" data-url="@Url.Action("Edit", "borrows", new { id = borrow.borrowId})">Edit</a>
+                <a href="#" class="btn btn-primary details-link" data-url="@Url.Action("Details", "borrows", new { id = borrow.borrowId})">Details</a>
+                <a href="#" class="btn btn-danger delete-link" data-url="@Url.Action("Delete", "borrows", new { id = borrow.borrowId})">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { borrowPage = 1 })">1</a>
+        </li>
+        <li class="page-item">
+            <span class="page-link">...</span>
+        </li>
+        @for (int i = Math.Max(2, Model.BorrowCurrentPage - 3); i <= Math.Min(Model.BorrowTotalPages - 1, Model.BorrowCurrentPage + 3); i++)
+        {
+            <li class="page-item @(i == Model.BorrowCurrentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { borrowPage = i })">@i</a>
+            </li>
+        }
+        <li class="page-item">
+            <span class="page-link">...</span>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("MaintainScreenIndex", new { borrowPage = Model.BorrowTotalPages })">@Model.BorrowTotalPages</a>
+        </li>
+    </ul>
+</nav>
+
+
+<style>
+    /* Custom CSS for the "Create New" buttons */
+    .create-link {
+        background-color: #6B3E07;
+        color: white;
+    }
+</style>
+
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sample Async CRUD</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        // Function to handle Edit link click event in the Combined View and Details modal
+        $(".edit-link, .edit-link-in-modal").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+
+        // Function to handle form submission within the modal
+        $("#modal-content").on("submit", "form", function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr("action");
+            var formData = form.serialize();
+
+            $.post(url, formData, function (data) {
+                $("#myModal").modal("hide");
+                location.reload();
+            });
+        });
+
+        // Function to handle other links (details, delete, create) within the modal
+        $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+    });
+</script>

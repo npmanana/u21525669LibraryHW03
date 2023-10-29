@@ -1,0 +1,199 @@
+﻿@model LibraryHW03.Models.CombinedViewModel
+@using PagedList.Mvc;
+@using PagedList;
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Students</h2>
+        <p>
+            <a href="#" class="btn create-link" data-url="@Url.Action("Create", "students")">New Student</a>
+        </p>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Birthdate</th>
+                    <th>Gender</th>
+                    <th>Class</th>
+                    <th>Point</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td>@student.name</td>
+                        <td>@student.surname</td>
+                        <td>@student.birthdate</td>
+                        <td>@student.gender</td>
+                        <td>@Html.DisplayFor(modelItem => student.@class)</td>
+                        <td>@student.point</td>
+                        <td class="text-end">
+                            <a href="#" class="btn btn-dark details-link" data-url="@Url.Action("Details", "students", new { id = student.studentId})">Details</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { studentPage = 1 })">1</a>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">...</span>
+                    </li>
+                    @for (int i = Math.Max(2, Model.StudentCurrentPage - 3); i <= Math.Min(Model.StudentTotalPages - 1, Model.StudentCurrentPage + 3); i++)
+                    {
+                        <li class="page-item @(i == Model.StudentCurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("HomeScreenIndex", new { studentPage = i })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item">
+                        <span class="page-link">...</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("HomeScreenIndex", new { studentPage = Model.StudentTotalPages })">@Model.StudentTotalPages</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Books</h2>
+        <p>
+            <a href="#" class="btn create-link" data-url="@Url.Action("Create", "books")">New Book</a>
+        </p>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <th>Page Count</th>
+                    <th>Point</th>
+                    <th>Author</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (var book in Model.Books)
+                {
+                    <tr>
+                        <td>@book.name</td>
+                        <td>@book.pagecount</td>
+                        <td>@book.point</td>
+                        <td>@book.authors.name</td>
+                        <td>@book.types.name</td>
+                        <td>
+                            @if (book.borrows.Any(borrow => borrow.takenDate.HasValue && !borrow.broughtDate.HasValue))
+                            {
+                                <span>Out</span>
+                            }
+                            else
+                            {
+                                <span>Available</span>
+                            }
+                        </td>
+                        <td class="text-end">                            
+                            <a href="#" class="btn btn-dark details-link" data-url="@Url.Action("Details", "books", new { id = book.bookId})">Details</a>                           
+                        </td>
+                    </tr>
+                }
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("HomeScreenIndex", new { bookPage = 1 })">1</a>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">...</span>
+                    </li>
+                    @for (int i = Math.Max(2, Model.BookCurrentPage - 3); i <= Math.Min(Model.BookTotalPages - 1, Model.BookCurrentPage + 3); i++)
+                    {
+                        <li class="page-item @(i == Model.BookCurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("HomeScreenIndex", new { bookPage = i })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item">
+                        <span class="page-link">...</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("HomeScreenIndex", new { bookPage = Model.BookTotalPages })">@Model.BookTotalPages</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    /* Custom CSS for the "Create New" buttons */
+    .create-link {
+        background-color: #6B3E07;
+        color: white;
+    }
+</style>
+
+
+
+
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sample Async CRUD</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        // Function to handle Edit link click event in the Combined View and Details modal
+        $(".edit-link, .edit-link-in-modal").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+
+        // Function to handle form submission within the modal
+        $("#modal-content").on("submit", "form", function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr("action");
+            var formData = form.serialize();
+
+            $.post(url, formData, function (data) {
+                $("#myModal").modal("hide");
+                location.reload();
+            });
+        });
+
+        // Function to handle other links (details, delete, create) within the modal
+        $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+    });
+</script>
