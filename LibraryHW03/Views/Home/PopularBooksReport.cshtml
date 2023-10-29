@@ -10,15 +10,15 @@
     <div class="col-md-6">
         <canvas id="barChart" width="400" height="300"></canvas>
         <input type="text" id="filename" placeholder="Enter filename">
-        <input type="text" id="description" placeholder="Enter description">
+        <input type="text" id "description" placeholder="Enter description">
         <button id="save">Save</button>
+        <button id="export">Export</button> <!-- Add this button -->
     </div>
     <div class="col-md-6">
         <canvas id="pieChart" width="400" height="300"></canvas>
     </div>
 </div>
 
-<!-- Table to display saved reports -->
 <div class="row">
     <div class="col-md-12">
         <h2>Saved Reports</h2>
@@ -31,7 +31,6 @@
                 </tr>
             </thead>
             <tbody id="savedReportsTable">
-                <!-- Saved reports will be added here dynamically -->
             </tbody>
         </table>
     </div>
@@ -60,14 +59,14 @@
                     label: 'Borrow Count',
                     data: borrowCounts,
                     backgroundColor: [
-                        'rgba(255, 228, 196, 0.7)', // Beige
-                        'rgba(255, 99, 71, 0.7)', // Red
-                        'rgba(255, 165, 0, 0.7)', // Orange
+                        'rgba(255, 228, 196, 0.7)',
+                        'rgba(255, 99, 71, 0.7)',
+                        'rgba(255, 165, 0, 0.7)',
                     ],
                     borderColor: [
-                        'rgba(255, 228, 196, 1)', // Beige
-                        'rgba(255, 99, 71, 1)', // Red
-                        'rgba(255, 165, 0, 1)', // Orange
+                        'rgba(255, 228, 196, 1)',
+                        'rgba(255, 99, 71, 1)',
+                        'rgba(255, 165, 0, 1)',
                     ],
                     borderWidth: 1
                 }]
@@ -92,18 +91,18 @@
         });
 
         var pieColors = [
-            'rgba(244, 164, 96, 0.7)', // Light Brown
-            'rgba(124, 252, 0, 0.7)', // Green
-            'rgba(255, 99, 71, 0.7)', // Red
-            'rgba(255, 165, 0, 0.7)', // Orange
-            'rgba(255, 192, 203, 0.7)', // Pink
-            'rgba(173, 216, 230, 0.7)', // Light Blue
-            'rgba(255, 0, 255, 0.7)', // Magenta
-            'rgba(0, 0, 255, 0.7)', // Blue
-            'rgba(0, 128, 128, 0.7)', // Teal
-            'rgba(128, 0, 128, 0.7)', // Purple
-            'rgba(0, 255, 0, 0.7)', // Lime
-            'rgba(128, 128, 0, 0.7)' // Olive
+            'rgba(244, 164, 96, 0.7)',
+            'rgba(124, 252, 0, 0.7)',
+            'rgba(255, 99, 71, 0.7)',
+            'rgba(255, 165, 0, 0.7)',
+            'rgba(255, 192, 203, 0.7)',
+            'rgba(173, 216, 230, 0.7)',
+            'rgba(255, 0, 255, 0.7)',
+            'rgba(0, 0, 255, 0.7)',
+            'rgba(0, 128, 128, 0.7)',
+            'rgba(128, 0, 128, 0.7)',
+            'rgba(0, 255, 0, 0.7)',
+            'rgba(128, 128, 0, 0.7)'
         ];
 
         var pieChart = new Chart(pieCtx, {
@@ -136,9 +135,8 @@
         var descriptionInput = document.getElementById("description");
         var savedReportsTable = document.getElementById("savedReportsTable");
 
-        // Function to add a saved report to the table
         function addSavedReport(filename, description, fileExtension) {
-            var newRow = savedReportsTable.insertRow(1); // Insert at the top
+            var newRow = savedReportsTable.insertRow(1);
             var cell1 = newRow.insertCell(0);
             var cell2 = newRow.insertCell(1);
             var cell3 = newRow.insertCell(2);
@@ -149,27 +147,26 @@
             var downloadLink = document.createElement("a");
             downloadLink.textContent = "Download";
             downloadLink.href = "/download/report?filename=" + filename + "&extension=" + fileExtension;
-            downloadLink.download = filename + "." + fileExtension; // Set the download attribute
+            downloadLink.download = filename + "." + fileExtension;
 
             cell3.appendChild(downloadLink);
         }
 
-        // Event listener for the Save button
         document.getElementById("save").addEventListener("click", function () {
             var filename = filenameInput.value || "chart_export";
             var description = descriptionInput.value || "No Description";
-
-            // You can specify the file extension or modify this code to determine it based on the chosen format.
-
-            // For example, if you want to use PNG:
             var fileExtension = "png";
-
-            // Add the saved report to the table
             addSavedReport(filename, description, fileExtension);
-
-            // Clear the filename and description inputs
             filenameInput.value = "";
             descriptionInput.value = "";
+        });
+
+        document.getElementById("export").addEventListener("click", function () {
+            var chartCanvas = document.getElementById('barChart');
+            var downloadLink = document.createElement("a");
+            downloadLink.href = chartCanvas.toDataURL("image/png");
+            downloadLink.download = "chart_export.png";
+            downloadLink.click();
         });
     });
 </script>

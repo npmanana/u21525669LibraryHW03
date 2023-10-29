@@ -89,7 +89,7 @@
                         @Html.DisplayFor(modelItem => type.name)
                     </td>
                     <td class="text-end">
-                        <!-- Add text-end class here -->
+                       
                         <a href="#" class="btn btn-secondary edit-link" data-url="@Url.Action("Edit", "types", new { id = type.typeId})">Edit</a>
                         <a href="#" class="btn btn-primary details-link" data-url="@Url.Action("Details", "types", new { id = type.typeId})">Details</a>
                         <a href="#" class="btn btn-danger delete-link" data-url="@Url.Action("Delete", "types", new { id = type.typeId})">Delete</a>
@@ -160,7 +160,7 @@
                 @Html.DisplayFor(modelItem => borrow.students.name)
             </td>
             <td class="text-end">
-                <!-- Add text-end class here -->
+                
                 <a href="#" class="btn btn-secondary edit-link" data-url="@Url.Action("Edit", "borrows", new { id = borrow.borrowId})">Edit</a>
                 <a href="#" class="btn btn-primary details-link" data-url="@Url.Action("Details", "borrows", new { id = borrow.borrowId})">Details</a>
                 <a href="#" class="btn btn-danger delete-link" data-url="@Url.Action("Delete", "borrows", new { id = borrow.borrowId})">Delete</a>
@@ -193,7 +193,7 @@
 
 
 <style>
-    /* Custom CSS for the "Create New" buttons */
+    
     .create-link {
         background-color: #6B3E07;
         color: white;

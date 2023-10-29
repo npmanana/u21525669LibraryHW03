@@ -2,7 +2,6 @@
 @using PagedList.Mvc;
 @using PagedList;
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -56,11 +55,10 @@
                         <span class="page-link">...</span>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("HomeScreenIndex", new { studentPage = Model.StudentTotalPages })">@Model.StudentTotalPages</a>
+                        <a class "page-link" href="@Url.Action("HomeScreenIndex", new { studentPage = Model.StudentTotalPages })">@Model.StudentTotalPages</a>
                     </li>
                 </ul>
             </nav>
-
         </div>
     </div>
 
@@ -98,8 +96,8 @@
                                 <span>Available</span>
                             }
                         </td>
-                        <td class="text-end">                            
-                            <a href="#" class="btn btn-dark details-link" data-url="@Url.Action("Details", "books", new { id = book.bookId})">Details</a>                           
+                        <td class="text-end">
+                            <a href="#" class="btn btn-dark details-link" data-url="@Url.Action("Details", "books", new { id = book.bookId})">Details</a>
                         </td>
                     </tr>
                 }
@@ -122,16 +120,13 @@
                         <span class="page-link">...</span>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("HomeScreenIndex", new { bookPage = Model.BookTotalPages })">@Model.BookTotalPages</a>
+                        <a class="page-link" href "@Url.Action("HomeScreenIndex", new { bookPage = Model.BookTotalPages })">@Model.BookTotalPages</a>
                     </li>
                 </ul>
             </nav>
-
         </div>
     </div>
 </div>
-
-
 
 <style>
     /* Custom CSS for the "Create New" buttons */
@@ -140,10 +135,6 @@
         color: white;
     }
 </style>
-
-
-
-
 
 <div id="myModal" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
@@ -157,9 +148,10 @@
         </div>
     </div>
 </div>
+
 <script>
     $(function () {
-        // Function to handle Edit link click event in the Combined View and Details modal
+       
         $(".edit-link, .edit-link-in-modal").click(function (e) {
             e.preventDefault();
             var url = $(this).data("url");
@@ -183,8 +175,7 @@
                 location.reload();
             });
         });
-
-        // Function to handle other links (details, delete, create) within the modal
+                
         $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
             e.preventDefault();
             var url = $(this).data("url");

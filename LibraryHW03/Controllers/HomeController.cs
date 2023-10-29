@@ -19,13 +19,11 @@ namespace LibraryHW03.Controllers
         LibraryEntities db = new LibraryEntities();
         public async Task<ActionResult> HomeScreenIndex(int? studentPage, int? bookPage)
         {
-            int pageSize = 10; // Number of items to display per page
-
-            // Calculate the current page for students and books separately
+            int pageSize = 10;             
             int studentPageNumber = studentPage ?? 1;
             int bookPageNumber = bookPage ?? 1;
 
-            // Fetch paginated students and books
+            
             var studentsData = await db.students.OrderBy(s => s.studentId)
            .ToPagedListAsync(studentPageNumber, pageSize);
 
@@ -39,11 +37,11 @@ namespace LibraryHW03.Controllers
             var viewModel = new CombinedViewModel
             {
                 Students = studentsData,
-                Books = booksData.ToList(), // Convert to a list
+                Books = booksData.ToList(), 
                 StudentCurrentPage = studentPageNumber, // Include current page numbers in the view model
                 BookCurrentPage = bookPageNumber,
-                StudentTotalPages = (int)Math.Ceiling((double)db.students.Count() / pageSize), // Calculate total pages for students
-                BookTotalPages = (int)Math.Ceiling((double)db.books.Count() / pageSize) // Calculate total pages for books
+                StudentTotalPages = (int)Math.Ceiling((double)db.students.Count() / pageSize),
+                BookTotalPages = (int)Math.Ceiling((double)db.books.Count() / pageSize) 
             };
 
             return View(viewModel);
@@ -54,7 +52,7 @@ namespace LibraryHW03.Controllers
 
         public async Task<ActionResult> MaintainScreenIndex(int? authorPage, int? typePage, int? borrowPage)
         {
-            int pageSize = 10; // Number of items to display per page
+            int pageSize = 10; 
 
             int authorPageNumber = authorPage ?? 1;
             int typePageNumber = typePage ?? 1;
